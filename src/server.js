@@ -16,7 +16,7 @@ app.get("/data", async (req, res) => {
 app.get("/", async (req, res) => {
   console.log("Hit on root route");
   res.send(
-    `Hello Private. This app is connected to a container running at ${process.env.PGHOST}:${process.env.PGPORT}`,
+    `Hello GitHub. This app is connected to a container running at ${process.env.PGHOST}:${process.env.PGPORT}`,
   );
 });
 
