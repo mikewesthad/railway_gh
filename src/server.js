@@ -4,6 +4,8 @@ const port = process.env.PORT || 4000;
 const app = express();
 const pool = new pg.Pool();
 
+let counter = 0;
+
 app.get("/data", async (req, res) => {
   try {
     res.json({ data: (await pool.query("SELECT NOW()")).rows });
@@ -14,7 +16,8 @@ app.get("/data", async (req, res) => {
 });
 
 app.get("/", async (req, res) => {
-  console.log("Hit on root route");
+  console.log(`Hit #${counter}`);
+  counter++;
   res.send(
     `Hello GitHub. This app is connected to a container running at ${process.env.PGHOST}:${process.env.PGPORT}`,
   );
