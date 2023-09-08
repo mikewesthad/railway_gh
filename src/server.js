@@ -3,6 +3,7 @@ const pg = require("pg");
 const port = process.env.PORT || 4000;
 const app = express();
 const pool = new pg.Pool();
+const ping = require("ping");
 
 let counter = 0;
 
@@ -15,11 +16,19 @@ app.get("/data", async (req, res) => {
   }
 });
 
+let baseUrl = process.env["RAILWAY_REGION"] != null ? ['railway.internal'] : ['up.railway.app']
+let hosts = ['europe', 'asia', 'us-west', 'us-east']
+let urls = hosts.map(h => `${h}.${baseUrl}`)
+
+console.log(`URLs are: ${urls}`);
+
 app.get("/", async (req, res) => {
   console.log(`Hit #${counter}`);
+  let results = await Promise.all(urls.map(url => ping.promise.probe(url)))
+  let timings = await results.map(result => `${result.host}: ${result.time}ms`)
   counter++;
   res.send(
-    `Hello GitHub. This app is connected to a container running at ${process.env.PGHOST}:${process.env.PGPORT}`,
+    `Hello ${process.env.RAILWAY_REGION}<br/>${timings.join("<br/>")}`,
   );
 });
 
