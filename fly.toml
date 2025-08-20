@@ -7,11 +7,14 @@ kill_timeout = 5
 processes = []
 
 [env]
-  test = 123
+  abc = 123
 
 [experimental]
   allowed_public_ports = []
   auto_rollback = true
+
+[http_service]
+  internal_port = 8080
 
 [[services]]
   http_checks = []
